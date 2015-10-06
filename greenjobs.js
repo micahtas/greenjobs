@@ -2,32 +2,64 @@
  * Created by Micah on 9/29/2015.
  */
 
-/* globals _, greenjobs */
+/* globals _ */
+/* exported testData, listIndustries, countyGreenJobs, jobsWithKeyword */
 
 /**
  * Test variable to test the data set greenJobs.
  */
-var testData = greenjobs.splice(0, 9);
+//var testData = greenjobs.splice(0, 9);
 
 /**
  * Function that returns a list of jobs
  * @param data the data set of jobs and it's info.
  * @returns a list of jobs.
  */
+/*
 function findIndustries(data)
 {
   return _.pluck(data, "Industry");
 }
-
+*/
 /**
  * Function that returns a list of jobs with no duplicates.
  * @param data the data set of jobs and it's info.
  * @returns returns all of the jobs in the data set with no duplicates.
  */
+
 function listIndustries(data)
 {
-  return _.uniq(findIndustries(data));
+  if(!_.every(data, hasIndustry))
+  {
+    throw new Error("No Industry field.");
+  }
+  if(!_.every(data, isEmpty))
+  {
+    throw new Error("Industry field is empty.");
+  }
+  return _.uniq(_.pluck(data, "Industry"));
 }
+
+/**
+ * Returns true if the passed record has Industry field.
+ * @param record the record.
+ * @returns {boolean} true if Industry field is present.
+ */
+function hasIndustry(record)
+{
+  return record.hasOwnProperty("Industry");
+}
+
+/**
+ * Returns true if the Industry field is empty.
+ * @param record the record.
+ * @returns {boolean} true if the Industry field is empty.
+ */
+function isEmpty(record)
+{
+  return record["Industry"] !== "";
+}
+
 
 /**
  * Function that returns an object where the keys are county names and the values are the number of green jobs.
